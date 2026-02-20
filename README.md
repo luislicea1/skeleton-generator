@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/logo.png" alt="Skeleton Generator" width="120" />
+  <img src="assets/logo.png" alt="Skeleton Generator" width="220" />
 
   <h1>Skeleton Generator</h1>
   <p><strong>Convierte cualquier SVG en un skeleton loader animado, listo para producción.</strong></p>
