@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Enable class-based dark mode for Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -12,15 +15,138 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Smooth theme transitions */
+html {
+  transition: background-color 0.2s ease;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Theme transition on all key elements (safe: only bg, border, color — not transform/opacity) */
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+}
+
+/* Disable transitions on animated elements so CSS keyframes are unaffected */
+[class*="animate-"],
+.sk-shimmer,
+.sk-shimmer::after {
+  transition: none !important;
+}
+
+/* ============================================================
+   Animation Picker — CSS shimmer previews
+   Uses --sk-dur CSS custom property for sync with slider
+   ============================================================ */
+
+.sk-shimmer {
+  position: relative;
+  overflow: hidden;
+  transform-origin: center;
+}
+
+.sk-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transition: none !important;
+}
+
+/* Left → Right */
+.sk-prev-ltr::after {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.22) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: skLtr var(--sk-dur, 1.5s) ease infinite;
+}
+@keyframes skLtr {
+  from { background-position: -100% 0; }
+  to   { background-position: 200% 0; }
+}
+
+/* Right → Left */
+.sk-prev-rtl::after {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.22) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: skRtl var(--sk-dur, 1.5s) ease infinite;
+}
+@keyframes skRtl {
+  from { background-position: 200% 0; }
+  to   { background-position: -100% 0; }
+}
+
+/* Top → Bottom */
+.sk-prev-ttb::after {
+  background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.22) 50%, transparent 100%);
+  background-size: 100% 200%;
+  animation: skTtb var(--sk-dur, 1.5s) ease infinite;
+}
+@keyframes skTtb {
+  from { background-position: 0 -100%; }
+  to   { background-position: 0 200%; }
+}
+
+/* Bottom → Top */
+.sk-prev-btt::after {
+  background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.22) 50%, transparent 100%);
+  background-size: 100% 200%;
+  animation: skBtt var(--sk-dur, 1.5s) ease infinite;
+}
+@keyframes skBtt {
+  from { background-position: 0 200%; }
+  to   { background-position: 0 -100%; }
+}
+
+/* Diagonal */
+.sk-prev-diag::after {
+  background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.22) 50%, transparent 100%);
+  background-size: 200% 200%;
+  animation: skDiag var(--sk-dur, 1.5s) ease infinite;
+}
+@keyframes skDiag {
+  from { background-position: -100% -100%; }
+  to   { background-position: 200% 200%; }
+}
+
+/* Radial */
+.sk-prev-radial::after {
+  background: radial-gradient(circle at center, rgba(255,255,255,0.28) 0%, transparent 65%);
+  animation: skRadial var(--sk-dur, 1.5s) ease-in-out infinite;
+}
+@keyframes skRadial {
+  0%, 100% { opacity: 0.2; transform: scale(0.6); }
+  50%       { opacity: 1;   transform: scale(1.3); }
+}
+
+/* Pulse */
+.sk-prev-pulse::after {
+  background: rgba(255, 255, 255, 0.22);
+  animation: skPulse var(--sk-dur, 1.5s) ease-in-out infinite;
+}
+@keyframes skPulse {
+  0%, 100% { opacity: 0; }
+  50%       { opacity: 1; }
+}
+
+/* Wave */
+.sk-prev-wave {
+  animation: skWave var(--sk-dur, 1.5s) ease-in-out infinite;
+  transition: none !important;
+}
+.sk-prev-wave::after {
+  background: linear-gradient(90deg, transparent 20%, rgba(255,255,255,0.18) 50%, transparent 80%);
+  background-size: 200% 100%;
+  animation: skLtr var(--sk-dur, 1.5s) ease-in-out infinite;
+}
+@keyframes skWave {
+  0%, 100% { transform: scaleY(0.92); }
+  50%       { transform: scaleY(1.08); }
 }
