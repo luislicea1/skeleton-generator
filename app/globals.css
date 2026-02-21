@@ -3,9 +3,32 @@
 /* Enable class-based dark mode for Tailwind v4 */
 @custom-variant dark (&:where(.dark, .dark *));
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Flip card utilities */
+@utility perspective-1000 {
+  perspective: 1000px;
+}
+
+@utility transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+@utility backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+@utility rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+:where(.dark) {
+  --background: #08080b;
+  --foreground: #f4f4f5;
+}
+
+:where(.light) {
+  --background: #f8f8fc;
+  --foreground: #18181b;
 }
 
 @theme inline {

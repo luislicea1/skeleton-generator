@@ -1,0 +1,269 @@
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap");
+
+/* Navbar */
+.nav-glass {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  z-index: 100;
+  background: rgba(8, 8, 11, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.nav-glass-light {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  z-index: 100;
+  background: rgba(248, 248, 252, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@keyframes pulseDot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.65);
+  }
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(80px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade up animations */
+.fade-up-1 {
+  animation: fadeUp 0.6s cubic-bezier(0.2, 0, 0.2, 1) both 0.08s;
+}
+.fade-up-2a {
+  animation: fadeUp 0.6s cubic-bezier(0.2, 0, 0.2, 1) both 0.22s;
+}
+.fade-up-2b {
+  animation: fadeUp 0.6s cubic-bezier(0.2, 0, 0.2, 1) both 0.32s;
+}
+.fade-up-2c {
+  animation: fadeUp 0.6s cubic-bezier(0.2, 0, 0.2, 1) both 0.42s;
+}
+.fade-up-3 {
+  animation: fadeUp 0.6s cubic-bezier(0.2, 0, 0.2, 1) both 0.52s;
+}
+.fade-up-4 {
+  animation: fadeUp 0.6s cubic-bezier(0.2, 0, 0.2, 1) both 0.62s;
+}
+.fade-up-5 {
+  animation: fadeUp 0.6s cubic-bezier(0.2, 0, 0.2, 1) both 0.72s;
+}
+
+.pulse-dot {
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+/* Card animations and transitions */
+.flip-card-container {
+  perspective: 1000px;
+}
+
+.flip-card {
+  transition: transform 0.4s ease;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner,
+.flip-card:focus-within .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 24px;
+  overflow: hidden;
+  padding-top: 5px;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* Card entrance animations */
+.flip-card {
+  opacity: 0;
+}
+
+.flip-card:nth-child(1),
+.flip-card:nth-child(3) {
+  transform: translateY(30px);
+  animation: cardEnterSide 0.7s ease-out forwards;
+}
+
+.flip-card:nth-child(2) {
+  animation: cardEnter 0.7s ease-out forwards;
+}
+
+.flip-card:nth-child(1) {
+  animation-delay: 0.4s;
+}
+.flip-card:nth-child(2) {
+  animation-delay: 0.55s;
+}
+.flip-card:nth-child(3) {
+  animation-delay: 0.7s;
+}
+
+@keyframes cardEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes cardEnterSide {
+  0% {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(30px);
+  }
+}
+
+.flip-card:nth-child(1):hover,
+.flip-card:nth-child(3):hover {
+  transform: translateY(20px);
+}
+
+.flip-card:nth-child(1),
+.flip-card:nth-child(3) {
+  transform: translateY(30px);
+}
+
+.flip-card:nth-child(1) {
+  animation-delay: 0.4s;
+}
+.flip-card:nth-child(2) {
+  animation-delay: 0.55s;
+}
+.flip-card:nth-child(3) {
+  animation-delay: 0.7s;
+}
+
+@keyframes cardEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.flip-card:nth-child(1),
+.flip-card:nth-child(3) {
+  animation-name: cardEnterSide;
+}
+
+.flip-card:nth-child(1) {
+  animation-delay: 0.4s;
+}
+.flip-card:nth-child(2) {
+  animation-delay: 0.55s;
+}
+.flip-card:nth-child(3) {
+  animation-delay: 0.7s;
+}
+
+@keyframes cardEnterSide {
+  0% {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(30px);
+  }
+}
+
+.flip-card:nth-child(1):hover,
+.flip-card:nth-child(3):hover {
+  transform: translateY(20px);
+}
+
+/* Card shadows */
+.card-shadow-side {
+  box-shadow:
+    0 16px 56px rgba(0, 0, 0, 0.55),
+    0 6px 16px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.card-shadow-center {
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.5),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Hero grid */
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 20%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 20%, transparent 100%);
+  opacity: 0.45;
+}
+
+.hero-grid-light {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 20%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 20%, transparent 100%);
+  opacity: 0.45;
+}
