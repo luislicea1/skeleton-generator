@@ -21,6 +21,7 @@ export interface Translations {
     processingPrecise: string;
     processingSilhouette: string;
     errorOnlySvg: string;
+    errorOnlyPng: string;
   };
   preview: {
     title: string;
