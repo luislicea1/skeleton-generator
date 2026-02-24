@@ -54,38 +54,49 @@ export default function Uploader({ mode, onModeChange, onLoad }: Readonly<Upload
     setError(null)
     setSizeInfo(null)
     const isPng = file.type === "image/png" || file.name.endsWith(".png")
+    const isSvg = file.type === "image/svg+xml" || file.name.endsWith(".svg")
 
-    if (!isPng) {
-      setError(t.uploader.errorOnlyPng)
+    if (!isPng && !isSvg) {
+      setError(t.uploader.errorOnlyPngOrSvg)
       return
     }
 
     setProcessing(true)
 
     try {
-      const formData = new FormData()
-      formData.append("file", file)
+      let svgText: string
+      let displayName = file.name
 
-      const response = await fetch("/api/png-to-svg", {
-        method: "POST",
-        body: formData
-      })
+      if (isPng) {
+        // Convert PNG to SVG
+        const formData = new FormData()
+        formData.append("file", file)
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || "Failed to convert PNG to SVG")
+        const response = await fetch("/api/png-to-svg", {
+          method: "POST",
+          body: formData
+        })
+
+        if (!response.ok) {
+          const errorData = await response.json()
+          throw new Error(errorData.error || "Failed to convert PNG to SVG")
+        }
+
+        const data = await response.json()
+        svgText = data.svg
+        displayName = file.name.replace(/\.[^/.]+$/, ".svg")
+      } else {
+        // Process SVG directly
+        svgText = await file.text()
       }
-
-      const data = await response.json()
-      const svgText = data.svg
 
       setRawSvgText(svgText)
       const blob = new Blob([svgText], { type: "image/svg+xml" })
       setImageUrl(URL.createObjectURL(blob))
-      setFilename(file.name.replace(/\.[^/.]+$/, ".svg"))
+      setFilename(displayName)
       await runParse(svgText)
     } catch (err) {
-      setError(err instanceof Error ? err.message : t.uploader.errorOnlyPng)
+      setError(err instanceof Error ? err.message : t.uploader.errorOnlyPngOrSvg)
       setProcessing(false)
     }
   }
@@ -215,7 +226,7 @@ export default function Uploader({ mode, onModeChange, onLoad }: Readonly<Upload
                 {t.uploader.dropzoneTitle}{" "}
                 <span className="text-indigo-500 dark:text-indigo-400 underline">{t.uploader.dropzoneCta}</span>
               </p>
-              <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">{t.uploader.dropzoneHint} PNG</p>
+              <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">{t.uploader.dropzoneHint} PNG / SVG</p>
             </div>
           </div>
         )}
@@ -240,7 +251,7 @@ export default function Uploader({ mode, onModeChange, onLoad }: Readonly<Upload
         </div>
       )}
 
-      <input ref={inputRef} type="file" accept=".png,image/png" className="hidden" onChange={handleChange} />
+      <input ref={inputRef} type="file" accept=".png,.svg,image/png,image/svg+xml" className="hidden" onChange={handleChange} />
     </div>
   )
 }
