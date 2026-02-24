@@ -27,7 +27,9 @@ export default function SkeletonContainer() {
       <Header />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start max-h-[calc(100vh-82px)] overflow-y-auto">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start h-[calc(100vh-82px)]  overflow-y-auto">
+
+          {/* Left: upload + mode + image preview */}
           <div className="w-full lg:w-96 flex-none flex flex-col gap-3 py-6">
             <div>
               <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">{t.container.uploadTitle}</h2>
@@ -36,9 +38,11 @@ export default function SkeletonContainer() {
             <Uploader mode={skeletonMode} onModeChange={setSkeletonMode} onLoad={setSvgData} />
           </div>
 
-          <div className="hidden lg:block w-px bg-gray-200 dark:bg-gray-800/60 self-stretch mt-10" />
+          {/* Vertical divider (desktop only) */}
+          <div className="hidden lg:block w-px bg-gray-200 dark:bg-gray-800/60 self-stretch " />
 
-          <div className="flex-1 min-w-0 py-6">
+          {/* Right: skeleton preview + export button */}
+          <div className="flex-1 min-w-0 py-6 h-full">
             {svgData ? (
               <div className="flex flex-col gap-6">
                 <PreviewPanel
