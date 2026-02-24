@@ -1,0 +1,31 @@
+/* ── Skeleton Reveal Carousel ── */
+
+.src-bone {
+  position: relative;
+  overflow: hidden;
+}
+
+.src-bone::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 35%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 65%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: src-bone-shimmer 1.8s ease-in-out infinite;
+}
+
+@keyframes src-bone-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

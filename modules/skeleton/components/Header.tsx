@@ -11,7 +11,7 @@ export default function Header() {
   const t = useTranslation();
 
   return (
-    <header className="border-b border-gray-200 dark:border-gray-800/60 bg-white/80 dark:bg-gray-950/80 backdrop-blur-sm sticky top-0 z-10">
+    <header className="border-b border-gray-200 dark:border-gray-800/60 bg-white/80 dark:bg-gray-950/80 backdrop-blur-sm sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6  flex items-center justify-between gap-4">
 
         {/* Logo + title */}
