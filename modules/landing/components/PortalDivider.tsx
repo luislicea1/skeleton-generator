@@ -119,48 +119,6 @@ export default function PortalDivider({ lineX }: PortalDividerProps) {
         </div>
       ))}
 
-      {/* ── Top orb ── */}
-      <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-        <div className="relative">
-          {/* Pulse ring */}
-          <div
-            className={`absolute inset-0 left-2 top-1 -m-2 rounded-full portal-pulse-ring ${
-              isDark ? "border-[#818cf8]/30" : "border-[#4f46e5]/20"
-            }`}
-            style={{ width: "24px", height: "24px", borderWidth: "1px" }}
-          />
-          {/* Core orb */}
-          <div
-            className={`w-4 h-4 rounded-full portal-orb-glow ${isDark ? "bg-[#818cf8]" : "bg-[#4f46e5]"}`}
-            style={{
-              boxShadow: isDark
-                ? "0 0 8px rgba(129,140,248,0.9), 0 0 20px rgba(129,140,248,0.4), 0 0 40px rgba(129,140,248,0.15)"
-                : "0 0 8px rgba(79,70,229,0.7), 0 0 20px rgba(79,70,229,0.3), 0 0 40px rgba(79,70,229,0.1)",
-            }}
-          />
-        </div>
-      </div>
-
-      {/* ── Bottom orb ── */}
-      <div className="absolute -bottom-3 left-1/2 -translate-x-1/2">
-        <div className="relative">
-          <div
-            className={`absolute inset-0 left-2 top-2 -m-2 rounded-full portal-pulse-ring-delayed ${
-              isDark ? "border-[#818cf8]/30" : "border-[#4f46e5]/20"
-            }`}
-            style={{ width: "24px", height: "24px", borderWidth: "1px" }}
-          />
-          <div
-            className={`w-4 h-4 rounded-full portal-orb-glow ${isDark ? "bg-[#818cf8]" : "bg-[#4f46e5]"}`}
-            style={{
-              boxShadow: isDark
-                ? "0 0 8px rgba(129,140,248,0.9), 0 0 20px rgba(129,140,248,0.4), 0 0 40px rgba(129,140,248,0.15)"
-                : "0 0 8px rgba(79,70,229,0.7), 0 0 20px rgba(79,70,229,0.3), 0 0 40px rgba(79,70,229,0.1)",
-            }}
-          />
-        </div>
-      </div>
-
       {/* ── Center diamond icon ── */}
       <div className="absolute top-1/2 left-2.5 -translate-x-1/2 -translate-y-1/2 portal-center-spin">
         <div
