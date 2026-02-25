@@ -89,13 +89,12 @@ export default function LandingPage() {
 
   return (
     <div
-      className={`h-dvh overflow-hidden flex flex-col font-(family-name:--font-dm) ${
+      className={`h-dvh overflow-hidden font-(family-name:--font-dm) ${
         isDark ? "bg-[#08080b] text-[#f4f4f5]" : "bg-[#f8f8fc] text-[#18181b]"
       }`}
     >
       {/* ── Animated background layer ── */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        {/* Gradient orbs that float around */}
         <div
           className="landing-orb-1 absolute rounded-full blur-[120px]"
           style={{
@@ -139,7 +138,6 @@ export default function LandingPage() {
           }}
         />
 
-        {/* Subtle grid pattern */}
         <div
           className="absolute inset-0"
           style={{
@@ -150,7 +148,6 @@ export default function LandingPage() {
           }}
         />
 
-        {/* Floating sparkle particles */}
         {[...Array(12)].map((_, i) => (
           <div
             key={`sparkle-${i}`}
@@ -173,50 +170,30 @@ export default function LandingPage() {
         ))}
       </div>
 
-      <Header />
+      {/* ── HEADER: altura fija 8dvh ── */}
+      <div style={{ height: "8dvh", flexShrink: 0 }}>
+        <Header />
+      </div>
 
-      {/* ── Hero text ── */}
+      {/* ── HERO: altura fija 42dvh, contenido centrado, overflow oculto ── */}
       <section
         ref={heroRef}
-        className="relative shrink-0 pt-16 pb-6 flex flex-col items-center z-40"
+        className="relative flex flex-col items-center justify-center z-40 overflow-hidden"
+        style={{ height: "42dvh" }}
       >
-        <div className="flex flex-col items-center text-center gap-5 px-6 max-w-180 w-full">
-          {/* Decorative badge */}
-          <div className="landing-badge-enter">
-            <span
-              className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium tracking-wide uppercase ${
-                isDark
-                  ? "bg-indigo-500/10 text-indigo-300 border border-indigo-500/20"
-                  : "bg-indigo-500/8 text-indigo-600 border border-indigo-500/15"
-              }`}
-            >
-              <span className="landing-badge-dot relative flex h-2 w-2">
-                <span
-                  className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                    isDark ? "bg-indigo-400" : "bg-indigo-500"
-                  }`}
-                />
-                <span
-                  className={`relative inline-flex rounded-full h-2 w-2 ${
-                    isDark ? "bg-indigo-400" : "bg-indigo-500"
-                  }`}
-                />
-              </span>
-              Open Source & Free
-            </span>
-          </div>
-
+        <div className="flex flex-col items-center text-center gap-[1.2vh] px-6 max-w-180 w-full">
           <h1
-            className={`font-(family-name:--font-syne) font-extrabold text-[clamp(2.8rem,5.5vw,4.4rem)] leading-tight tracking-tight flex flex-col gap-0 ${
+            className={`font-(family-name:--font-syne) font-extrabold leading-[1.05] tracking-tight flex flex-col gap-0 ${
               isDark ? "text-[#f4f4f5]" : "text-[#18181b]"
             }`}
+            style={{
+              fontSize: "clamp(1.4rem, 5.8vh, 4.4rem)",
+            }}
           >
             <span className="block landing-title-line-1">Crea Skeletons</span>
             <span className="block landing-title-line-2 relative">
               <span
-                className={`relative z-10 ${
-                  isDark ? "text-transparent" : "text-transparent"
-                }`}
+                className="relative z-10 text-transparent"
                 style={{
                   backgroundImage: isDark
                     ? "linear-gradient(135deg, #818cf8 0%, #a78bfa 40%, #c084fc 70%, #818cf8 100%)"
@@ -229,7 +206,6 @@ export default function LandingPage() {
               >
                 animados,
               </span>
-              {/* Glow behind the gradient text */}
               <span
                 className="absolute inset-0 blur-[30px] opacity-30 z-0"
                 style={{
@@ -245,18 +221,22 @@ export default function LandingPage() {
 
           {/* Subtitle */}
           <p
-            className={`landing-subtitle max-w-lg text-base leading-relaxed ${
+            className={`landing-subtitle max-w-lg leading-relaxed ${
               isDark ? "text-[#a1a1aa]" : "text-[#71717a]"
             }`}
+            style={{
+              fontSize: "clamp(0.7rem, 1.7vh, 1rem)",
+            }}
           >
             Genera skeleton loaders animados desde cualquier diseño.
             Copia el código y úsalo en tu proyecto.
           </p>
 
+          {/* Buttons */}
           <div className="flex items-center gap-2.5 flex-wrap justify-center landing-buttons-enter">
             <Link
               href="/skeleton"
-              className={`group relative inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-[0.95rem] transition-all duration-300 overflow-hidden ${
+              className={`group relative inline-flex items-center gap-2 px-7 py-3 rounded-xl font-semibold text-[0.95rem] transition-all duration-300 overflow-hidden ${
                 isDark
                   ? "text-white hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(99,102,241,0.4)]"
                   : "text-white hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(79,70,229,0.25)]"
@@ -267,7 +247,6 @@ export default function LandingPage() {
                   : "linear-gradient(135deg, #4f46e5, #6366f1)",
               }}
             >
-              {/* Shine effect on hover */}
               <span className="absolute inset-0 landing-btn-shine" />
               <span className="relative z-10">Empezar gratis</span>
               <svg
@@ -308,10 +287,11 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Carousels ── */}
+      {/* ── CARRUSEL: altura fija 50dvh ── */}
       <div
         ref={carouselWrapperRef}
-        className="relative flex-1 min-h-0 overflow-hidden"
+        className="relative overflow-hidden"
+        style={{ height: "50dvh" }}
       >
         <div className="absolute inset-0 z-30 pointer-events-none">
           <PortalDivider lineX={portalLineX} />
