@@ -1,9 +1,8 @@
 "use client"
 import { Icon } from "@iconify/react"
-import { useEffect, useRef, useState, type ChangeEvent, type DragEvent } from "react"
 import { useTranslation } from "../context/language-context"
+import { formatBytes, useUploader } from "../hooks/useUploader"
 import type { SkeletonMode, SvgData } from "../types/skeleton"
-import { parseSvgContour, parseSvgPrecise } from "../utils/svgParser"
 
 interface UploaderProps {
   mode: SkeletonMode
@@ -11,110 +10,22 @@ interface UploaderProps {
   onLoad: (data: SvgData) => void
 }
 
-function formatBytes(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
-  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`
-}
-
 export default function Uploader({ mode, onModeChange, onLoad }: Readonly<UploaderProps>) {
   const t = useTranslation()
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [isDragging, setIsDragging] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [filename, setFilename] = useState<string | null>(null)
-  const [imageUrl, setImageUrl] = useState<string | null>(null)
-  const [processing, setProcessing] = useState(false)
-  const [sizeInfo, setSizeInfo] = useState<{ original: number; skeleton: number } | null>(null)
-  const [rawSvgText, setRawSvgText] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (rawSvgText) runParse(rawSvgText)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode])
-
-  async function runParse(text: string) {
-    setError(null)
-    setSizeInfo(null)
-    setProcessing(true)
-    try {
-      const originalSize = new Blob([text]).size
-      const data = mode === "silhouette" ? await parseSvgContour(text) : parseSvgPrecise(text)
-      const skeletonSize = new Blob([data.skeletonBody]).size
-      setSizeInfo({ original: originalSize, skeleton: skeletonSize })
-      onLoad(data)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t.uploader.errorOnlySvg)
-    } finally {
-      setProcessing(false)
-    }
-  }
-
-  async function processFile(file: File) {
-    setError(null)
-    setSizeInfo(null)
-    const isPng = file.type === "image/png" || file.name.endsWith(".png")
-    const isSvg = file.type === "image/svg+xml" || file.name.endsWith(".svg")
-
-    if (!isPng && !isSvg) {
-      setError(t.uploader.errorOnlyPngOrSvg)
-      return
-    }
-
-    setProcessing(true)
-
-    try {
-      let svgText: string
-      let displayName = file.name
-
-      if (isPng) {
-        // Convert PNG to SVG
-        const formData = new FormData()
-        formData.append("file", file)
-
-        const response = await fetch("/api/png-to-svg", {
-          method: "POST",
-          body: formData
-        })
-
-        if (!response.ok) {
-          const errorData = await response.json()
-          throw new Error(errorData.error || "Failed to convert PNG to SVG")
-        }
-
-        const data = await response.json()
-        svgText = data.svg
-        displayName = file.name.replace(/\.[^/.]+$/, ".svg")
-      } else {
-        // Process SVG directly
-        svgText = await file.text()
-      }
-
-      setRawSvgText(svgText)
-      const blob = new Blob([svgText], { type: "image/svg+xml" })
-      setImageUrl(URL.createObjectURL(blob))
-      setFilename(displayName)
-      await runParse(svgText)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t.uploader.errorOnlyPngOrSvg)
-      setProcessing(false)
-    }
-  }
-
-  function handleDrop(e: DragEvent<HTMLDivElement>) {
-    e.preventDefault()
-    setIsDragging(false)
-    const file = e.dataTransfer.files[0]
-    if (file) processFile(file)
-  }
-
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (file) processFile(file)
-    e.target.value = ""
-  }
-
-  const reduction = sizeInfo ? Math.max(0, Math.round((1 - sizeInfo.skeleton / sizeInfo.original) * 100)) : null
+  const {
+    inputRef,
+    isDragging,
+    error,
+    filename,
+    imageUrl,
+    processing,
+    sizeInfo,
+    reduction,
+    handleDrop,
+    handleDragOver,
+    handleDragLeave,
+    handleChange
+  } = useUploader({ mode, onLoad })
 
   const MODES = [
     { value: "precise" as SkeletonMode, label: t.uploader.modePrecise, desc: t.uploader.modePreciseDesc },
@@ -164,11 +75,8 @@ export default function Uploader({ mode, onModeChange, onLoad }: Readonly<Upload
 
       {/* Drop zone */}
       <div
-        onDragOver={(e) => {
-          e.preventDefault()
-          setIsDragging(true)
-        }}
-        onDragLeave={() => setIsDragging(false)}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={!imageUrl && !processing ? () => inputRef.current?.click() : undefined}
         className={[
@@ -226,7 +134,7 @@ export default function Uploader({ mode, onModeChange, onLoad }: Readonly<Upload
                 {t.uploader.dropzoneTitle}{" "}
                 <span className="text-indigo-500 dark:text-indigo-400 underline">{t.uploader.dropzoneCta}</span>
               </p>
-              <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">{t.uploader.dropzoneHint} PNG / SVG</p>
+              <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">{t.uploader.dropzoneHint}</p>
             </div>
           </div>
         )}
@@ -251,7 +159,13 @@ export default function Uploader({ mode, onModeChange, onLoad }: Readonly<Upload
         </div>
       )}
 
-      <input ref={inputRef} type="file" accept=".png,.svg,image/png,image/svg+xml" className="hidden" onChange={handleChange} />
+      <input
+        ref={inputRef}
+        type="file"
+        accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml"
+        className="hidden"
+        onChange={handleChange}
+      />
     </div>
   )
 }
