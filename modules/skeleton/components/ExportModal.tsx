@@ -60,7 +60,6 @@ export default function ExportModal({
     })
   }
 
-  // Mount/unmount with closing animation
   useEffect(() => {
     if (isOpen) {
       setClosing(false)
@@ -75,7 +74,6 @@ export default function ExportModal({
     }
   }, [isOpen]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ESC key
   useEffect(() => {
     if (!isOpen) return
     function handleKey(e: KeyboardEvent) {
@@ -85,7 +83,6 @@ export default function ExportModal({
     return () => document.removeEventListener("keydown", handleKey)
   }, [isOpen, onClose])
 
-  // Lock body scroll
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : ""
     return () => {
@@ -99,7 +96,6 @@ export default function ExportModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
-      {/* ── Backdrop ─────────────────────────────────────── */}
       <div
         className={[
           "absolute inset-0 bg-black/70 backdrop-blur-sm",
@@ -109,9 +105,7 @@ export default function ExportModal({
         aria-hidden="true"
       />
 
-      {/* ── Wrapper (relative) — close button + card ─────── */}
       <div className="relative w-full sm:max-w-6xl">
-        {/* Close button — sibling of card, NOT clipped by clip-path */}
         <button
           onClick={onClose}
           aria-label={t.exportModal.close}
@@ -126,7 +120,6 @@ export default function ExportModal({
           <Icon icon="lucide:x" className="w-4 h-4" />
         </button>
 
-        {/* ── Gray glow line — visible during horizontal expand phase ─────── */}
         {!closing && (
           <div
             className="absolute inset-0 z-[-1] flex items-center justify-center pointer-events-none"
@@ -136,7 +129,6 @@ export default function ExportModal({
           </div>
         )}
 
-        {/* ── Gray glow line — visible during horizontal collapse phase (OUT) ─────── */}
         {closing && (
           <div
             className="absolute inset-0 z-[-1] flex items-center justify-center pointer-events-none"
@@ -161,9 +153,7 @@ export default function ExportModal({
             closing ? "animate-modal-collapse" : "animate-modal-expand"
           ].join(" ")}
         >
-          {/* ── Content wrapper — fades in after expand ───── */}
           <div className={["flex flex-col flex-1 min-h-0", closing ? "invisible" : "animate-modal-content"].join(" ")}>
-            {/* Header */}
             <div className="flex items-center px-5 py-3.5 border-b border-gray-200 dark:border-gray-800 shrink-0">
               <div className="flex items-center gap-2.5">
                 <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-indigo-600 shrink-0">
@@ -180,7 +170,6 @@ export default function ExportModal({
               </div>
             </div>
 
-            {/* Framework tabs */}
             <div className="flex items-center border-b border-gray-200 dark:border-gray-800 shrink-0 overflow-x-auto">
               {FRAMEWORKS.map((fw) => {
                 const isActive = activeFramework === fw.id
@@ -203,7 +192,6 @@ export default function ExportModal({
               })}
             </div>
 
-            {/* Body */}
             <div className="flex flex-1 min-h-0 ">
               <ExportPanel
                 svgData={svgData}
@@ -217,9 +205,7 @@ export default function ExportModal({
               />
             </div>
 
-            {/* Bottom bar */}
             <div className="shrink-0 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/60 px-4 py-3">
-              {/* Progress bars */}
               {(exportingGif || exportingWebm) && (
                 <div className="mb-3 flex flex-col gap-1.5">
                   {exportingGif && (
@@ -248,7 +234,6 @@ export default function ExportModal({
               )}
 
               <div className="flex items-center justify-between gap-3">
-                {/* Animation exports */}
                 <div className="flex items-center gap-2">
                   <button
                     onClick={exportAsGif}
@@ -305,11 +290,8 @@ export default function ExportModal({
               </div>
             </div>
           </div>
-          {/* /content wrapper */}
         </div>
-        {/* /modal card */}
       </div>
-      {/* /wrapper */}
     </div>
   )
 }

@@ -3,7 +3,6 @@ export type Language = "es" | "en"
 export interface Translations {
   header: {
     title: string
-    subtitle: string
     badge: string
   }
   uploader: {
@@ -74,5 +73,13 @@ export interface Translations {
   theme: {
     switchToLight: string
     switchToDark: string
+  }
+  landing: {
+    titleLine1: string
+    titleGradient: string
+    titleLine3: string
+    subtitle: string
+    ctaPrimary: string
+    ctaGithub: string
   }
 }
