@@ -25,10 +25,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   function toggleTheme() {
-    const next: AppTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(next);
-    localStorage.setItem('app-theme', next);
-    document.documentElement.classList.toggle('dark', next === 'dark');
+    setTheme((prev) => {
+      const next: AppTheme = prev === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('app-theme', next);
+      document.documentElement.classList.toggle('dark', next === 'dark');
+      return next;
+    });
   }
 
   return (

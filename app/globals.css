@@ -26,7 +26,7 @@
   --foreground: #f4f4f5;
 }
 
-:where(.light) {
+:root:not(.dark) {
   --background: #f8f8fc;
   --foreground: #18181b;
 }
@@ -36,6 +36,44 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+}
+
+/* ============================================================
+   Catppuccin Mocha Theme — Syntax Highlighting
+   ============================================================ */
+
+:root {
+  --font-code: 'Cascadia Code', 'JetBrains Mono', 'Fira Code', monospace;
+  --font-code-ligatures: 'Cascadia Code', 'Fira Code', monospace;
+  --shiki-bg: #1e1e2e;
+  --shiki-fg: #cdd6f4;
+  --shiki-comment: #6c7086;
+  --shiki-keyword: #cba6f7;
+  --shiki-string: #a6e3a1;
+  --shiki-number: #fab387;
+  --shiki-function: #89b4fa;
+  --shiki-operator: #89dceb;
+  --shiki-class: #f9e2af;
+  --shiki-variable: #cdd6f4;
+  --shiki-constant: #fab387;
+  --shiki-property: #89b4fa;
+  --shiki-punctuation: #9399b2;
+  --shiki-tag: #f38ba8;
+  --shiki-attribute: #f9e2af;
+}
+
+/* Enable font ligatures for code */
+code, pre, .code-block, [class*="language-"], .shiki {
+  font-family: var(--font-code-ligatures) !important;
+  font-variant-ligatures: common-ligatures contextual !important;
+  font-feature-settings: "calt" 1, "liga" 1 !important;
+}
+
+/* Shiki output overrides */
+.shiki code {
+  font-family: inherit;
+  font-variant-ligatures: inherit;
+  font-feature-settings: inherit;
 }
 
 /* Smooth theme transitions */
@@ -172,4 +210,143 @@ body {
 @keyframes skWave {
   0%, 100% { transform: scaleY(0.92); }
   50%       { transform: scaleY(1.08); }
+}
+
+/* ============================================================
+   Export Modal — 3-phase expand animation
+   1) Dot at center
+   2) Expand horizontally → line
+   3) Expand vertically → full modal
+   4) Content fades in
+   ============================================================ */
+
+@keyframes sk-modal-expand {
+  0% {
+    /* Dot: 10×10px at center */
+    clip-path: inset(calc(50% - 5px) calc(50% - 5px) round 9999px);
+  }
+  35% {
+    /* Full-width line, 16px tall — expands horizontally */
+    clip-path: inset(calc(50% - 8px) 0px round 4px);
+  }
+  50% {
+    /* Pause on the line — clearly visible */
+    clip-path: inset(calc(50% - 8px) 0px round 4px);
+  }
+  100% {
+    /* Full reveal */
+    clip-path: inset(0px 0px round 16px);
+  }
+}
+
+@keyframes sk-modal-collapse {
+  0% {
+    /* Full modal */
+    clip-path: inset(0px 0px round 16px);
+    opacity: 1;
+  }
+  35% {
+    /* Collapse vertically to horizontal line */
+    clip-path: inset(calc(50% - 8px) 0px round 4px);
+    opacity: 1;
+  }
+  50% {
+    /* Pause on line before horizontal shrink */
+    clip-path: inset(calc(50% - 8px) 0px round 4px);
+    opacity: 1;
+  }
+  100% {
+    /* Shrink horizontally to dot at center */
+    clip-path: inset(calc(50% - 5px) calc(50% - 5px) round 9999px);
+    opacity: 0;
+  }
+}
+
+@keyframes sk-modal-content {
+  0%, 52% { opacity: 0; transform: translateY(10px); }
+  100%    { opacity: 1; transform: translateY(0);     }
+}
+
+@keyframes sk-modal-content-out {
+  0%, 35% { opacity: 1; transform: translateY(0); }
+  100%    { opacity: 0; transform: translateY(10px); }
+}
+
+@keyframes sk-modal-btn {
+  0%, 55% { opacity: 0; transform: scale(0.3); }
+  88%     {             transform: scale(1.15); }
+  100%    { opacity: 1; transform: scale(1);    }
+}
+
+@keyframes sk-modal-btn-out {
+  0%, 35% { opacity: 1; transform: scale(1); }
+  80%     {             transform: scale(1.15); }
+  100%    { opacity: 0; transform: scale(0.3); }
+}
+
+/* Separate glow line — visible during the horizontal line phase */
+@keyframes sk-modal-line-glow {
+  0%   { opacity: 0;   transform: scaleX(0.02); }
+  15%  { opacity: 1;   transform: scaleX(0.05); }
+  42%  { opacity: 1;   transform: scaleX(1);    }
+  55%  { opacity: 0;   transform: scaleX(1);    }
+  100% { opacity: 0; }
+}
+
+@keyframes sk-modal-line-out {
+  0%   { opacity: 0;   transform: scaleX(1); }
+  35%  { opacity: 0;   transform: scaleX(1); }
+  45%  { opacity: 1;   transform: scaleX(1); }
+  85%  { opacity: 1;   transform: scaleX(0.05); }
+  100% { opacity: 0;   transform: scaleX(0.02); }
+}
+
+@keyframes sk-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes sk-backdrop-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@utility animate-modal-expand {
+  animation: sk-modal-expand 820ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@utility animate-modal-collapse {
+  animation: sk-modal-collapse 820ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility animate-modal-content {
+  animation: sk-modal-content 820ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@utility animate-modal-content-out {
+  animation: sk-modal-content-out 820ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility animate-modal-btn {
+  animation: sk-modal-btn 820ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@utility animate-modal-btn-out {
+  animation: sk-modal-btn-out 820ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility animate-modal-line {
+  animation: sk-modal-line-glow 820ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@utility animate-modal-line-out {
+  animation: sk-modal-line-out 820ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility animate-backdrop-in {
+  animation: sk-backdrop-in 300ms ease forwards;
+}
+
+@utility animate-backdrop-out {
+  animation: sk-backdrop-out 190ms ease forwards;
 }

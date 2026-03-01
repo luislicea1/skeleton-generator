@@ -9,17 +9,17 @@ export default function ThemeSwitch() {
   const isDark = theme === 'dark';
 
   return (
-    <label className="relative inline-flex items-center cursor-pointer gap-2">
-      
-      <input
-        type="checkbox"
-        checked={isDark}
-        onChange={toggleTheme}
-        className="sr-only peer"
-        role="switch"
-        aria-label={isDark ? t.theme.switchToLight : t.theme.switchToDark}
+    <button
+      type="button"
+      onClick={toggleTheme}
+      className="relative w-9 h-5 rounded-full transition-colors duration-300 cursor-pointer"
+      style={{ backgroundColor: isDark ? '#4f46e5' : '#e5e7eb' }}
+      aria-label={isDark ? t.theme.switchToLight : t.theme.switchToDark}
+    >
+      <span
+        className="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-300"
+        style={{ transform: isDark ? 'translateX(100%)' : 'translateX(0)' }}
       />
-      <div className="w-9 h-5 bg-gray-200 hover:bg-gray-300 peer-focus:outline-0 peer-focus:ring-transparent rounded-full peer transition-all ease-in-out duration-500 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600 hover:peer-checked:bg-indigo-700" />
-    </label>
+    </button>
   );
 }

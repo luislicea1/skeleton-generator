@@ -50,6 +50,11 @@ export interface Translations {
     exportButton: string
     themeLight: string
     themeDark: string
+    animationExport: string
+    exportGif: string
+    exportVideo: string
+    exportingProgress: string
+    exportError: string
   }
   container: {
     uploadTitle: string

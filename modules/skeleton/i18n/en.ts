@@ -50,6 +50,11 @@ const en: Translations = {
     exportButton: 'Export code',
     themeLight: 'light',
     themeDark: 'dark',
+    animationExport: 'Export as animation',
+    exportGif: 'Animated GIF',
+    exportVideo: 'WebM Video',
+    exportingProgress: 'Generating frames… {n}%',
+    exportError: 'Export failed',
   },
   container: {
     uploadTitle: 'PNG, JPG, WebP or SVG Image',
