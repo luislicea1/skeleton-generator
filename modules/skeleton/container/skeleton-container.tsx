@@ -27,7 +27,7 @@ export default function SkeletonContainer() {
       <Header />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start h-[calc(100vh-82px)]  overflow-y-auto">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-center lg:items-start h-[calc(100vh-82px)]  overflow-y-auto">
 
           {/* Left: upload + mode + image preview */}
           <div className="w-full lg:w-96 flex-none flex flex-col gap-3 py-6">
