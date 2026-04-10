@@ -143,10 +143,10 @@ export default function Uploader({ mode, onModeChange, onLoad }: Readonly<Upload
       {/* Size reduction */}
       {sizeInfo && reduction !== null && !processing && (
         <div className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40">
-          <Icon icon="lucide:trending-up" className="w-4 h-4 text-emerald-500 dark:text-emerald-400 shrink-0" />
+          <Icon icon={reduction > 0 ? "lucide:trending-down" : "lucide:trending-up"} className="w-4 h-4 text-emerald-500 dark:text-emerald-400 shrink-0" />
           <span className="text-xs text-emerald-600 dark:text-emerald-300">
             {formatBytes(sizeInfo.original)} → {formatBytes(sizeInfo.skeleton)}
-            {reduction > 0 && <span className="ml-1 font-semibold">(-{reduction}%)</span>}
+            {reduction > 0 && <span className="ml-1 font-semibold">(-{reduction}% saved)</span>}
           </span>
         </div>
       )}
